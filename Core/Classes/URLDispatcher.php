@@ -43,12 +43,23 @@ class URLDispatcher
         $this->action=$action;
     }
 
-    public function call()
+    public function getArgs()
     {
-        $controllerName=ucfirst($this->controller).'Controller';
-        $actionName=$this->action.'Action';
-       //require_once self::CONTROLLER_DIRECTORY.$controllerName.self::CONTROLLER_EXTENSION;
-        call_user_func_array([new $controllerName, $actionName], [$this->args]);
+        return $this->args;
     }
     
+    public function setArg($key, $value)
+    {
+        $this->args[$key]=$value;
+    }
+    
+    public function getArg($key)
+    {
+        return $this->args[$key];
+    }
+    
+    public function deleteArg($key)
+    {
+        unset($this->args[$key]);
+    }
 }

@@ -24,7 +24,7 @@ and open the template in the editor.
         <link href="./assets/css/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <?php include_once $_template?>
+        <?php template()?>
     </body>
     
 </html>

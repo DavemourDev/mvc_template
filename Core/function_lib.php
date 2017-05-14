@@ -20,11 +20,9 @@ function debug()
  * @param string $url URL que sigue a la base.
  * @return URLDispatcher
  */
-function url_dispatcher($url = '')
+function url_dispatcher()
 {
-    $url = isset($_GET['path']) ? $_GET['path'] : '';
-
-    $urlArray = explode('/', $url);
+    $urlArray = explode('/', isset($_GET['path'])?$_GET['path']:'');
     $controller = !empty($urlArray[0]) ? $urlArray[0] : '';
     $action = !empty($urlArray[1]) ? $urlArray[1] : '';
     $args = array_slice($urlArray, 2);
@@ -42,10 +40,26 @@ function render_view($view, $args = [])
     (new ViewRenderer())->render($view, $args);
 }
 
-function act() 
+function template($template=null)
 {
-    url_dispatcher()->call();
+    
+    if(is_null($template))
+    {
+        $template=viewArg('_template');
+    }
+    return (new ViewRenderer)->add_template($template);
 }
+
+/**
+ * Llama al controlador y la acción definidos por la ruta
+ */
+function call_to_action()
+    {
+        $url=url_dispatcher();
+        $controllerName=ucfirst($url->getController()).'Controller';
+        $actionName=$url->getAction().'Action';
+        call_user_func_array([new $controllerName, $actionName], [$url->getArgs()]);
+    }
 
 /**
  * Incluye un archivo si éste existe.
@@ -54,15 +68,49 @@ function act()
  */
 function include_if_exists($filename) 
 {
-    if (file_exists($filename)) {
-        //debug($filename);
-        include_once($filename);
-        return true;
+    if ($exists = file_exists($filename)) 
+    {
+        include($filename);
     }
-    return false;
+    return $exists;
 }
 
+/**
+ * Comprueba si una cadena de texto no contiene puntos.
+ * @param string $str Cadena de texto de entrada.
+ * @return boolean Devuelve true si la cadena introducida no contiene el caracter '.'
+ */
 function not_contains_point($str)
 {
     return !strstr($str, '.');
+}
+
+/**
+ * Devuelve un argumento de la vista o fija un argumento a la vista.
+ */
+function viewArg($key, $value=null)
+{
+    if(is_null($value))
+    {
+        //Si value es nulo, devuelve el valor de la clave guardada.
+        return ViewArgs::get($key);
+    }
+    else
+    {
+        //si value no es nulo, asigna el valor a la clave indicada.
+        return ViewArgs::set($key, $value);
+    }
+}
+
+/**
+ * Obtiene un array con la configuración de la aplicación.
+ * @param string $key Clave de la parte que quiere obtenerse
+ * @return array Devuelve un array con la configuración global de la aplicación o con una sección de la misma.
+ */
+function get_config($key = null)
+{
+    $config= json_decode(file_get_contents(__DIR__.'/config.json'), true);
+    
+    return $key ? $config[$key] : $config;
+    
 }

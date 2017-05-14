@@ -1,0 +1,21 @@
+{
+    "controller": {
+        "default_controller":"main",
+        "default_action":"home"
+    },
+    "database":{
+        "host":"localhost",
+        "user":"root",
+        "password":null,
+        "database":"my_db",
+        "dbms":"mysql"
+    },
+    "view":{
+        "default_args":{
+            "clave1":"valor1"
+        },
+        "illegal_args":[
+            "_template"
+        ]
+    }
+}
