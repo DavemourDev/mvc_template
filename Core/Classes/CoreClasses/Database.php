@@ -8,8 +8,13 @@
 class Database 
 {
     private $dbh, $error, $stmt;
+    /**
+     * Instancia única del objeto de base de datos.
+     * @var Database
+     */
+    private static $instance=null;
     
-    public function __construct() 
+    private function __construct() 
     {
         $config = get_config('database');
         
@@ -28,7 +33,6 @@ class Database
         {
             $this->error=$ex->getMessage();
         }
-        
     }
     
     public function query($query)
@@ -102,5 +106,13 @@ class Database
         return $this->stmt->debugDumpParams();
     }
     
+    public static function getInstance()
+    {
+        if(!is_null(self::$instance))
+        {
+            self::$instance=new Database;
+        }
+        return self::$instance;
+    }
     
 }

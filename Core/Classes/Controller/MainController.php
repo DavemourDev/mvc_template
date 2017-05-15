@@ -8,18 +8,26 @@
 class MainController extends Controller
 {
 
-    public function homeAction($args)
+    protected function homeAction()
     {
-        render_view('templates/home', $args);
+        render_view('templates/home');
     }
     
-    public function errorAction()
+    protected function listAction()
     {
-        render_view('templates/error', [
-            'error_heading'=>'Error de prueba',
-            'error_body'=>'Este error ha sido lanzado para ver cómo queda en la vista de error.',
-            'error_footer'=>'Más info del error o contacto',
-            ]);
+        viewArg('MiNombre', 'David');
+        render_view('templates/list');
+    }
+    
+    protected function personillaAction()
+    {
+        $personilla=new Personilla;
+        $personilla->setNombre(viewArg(0));
+        $personilla->setEdad(viewArg(1));
+        
+        viewArg('personilla', $personilla);
+        
+        render_view('templates/personilla');
     }
     
 }

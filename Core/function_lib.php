@@ -57,8 +57,10 @@ function call_to_action()
     {
         $url=url_dispatcher();
         $controllerName=ucfirst($url->getController()).'Controller';
-        $actionName=$url->getAction().'Action';
-        call_user_func_array([new $controllerName, $actionName], [$url->getArgs()]);
+        //$actionName=$url->getAction().'Action';
+        $actionName=$url->getAction();
+        //call_user_func_array([new $controllerName, $actionName], [$url->getArgs()]);
+        (new $controllerName)->$actionName($url->getArgs());
     }
 
 /**

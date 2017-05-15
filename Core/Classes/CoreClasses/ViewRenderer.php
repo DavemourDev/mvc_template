@@ -23,10 +23,10 @@ class ViewRenderer
      */
     public function render($view, $args=[])
     {
-        foreach($args as $k=>$v)
-        {
-            viewArg($k, $v);
-        }
+//        foreach($args as $k=>$v)
+//        {
+//            viewArg($k, $v);
+//        }
         
         viewArg('_template', $view.self::EXTENSION);
         

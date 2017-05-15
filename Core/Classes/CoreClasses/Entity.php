@@ -67,13 +67,7 @@ abstract class Entity implements Crud{
         return $entity->fieldExists($field);
     }
     
-    public abstract function getAll();
-    public abstract function getById();
-    public abstract function getByField($field, $value, $mode='equals' );
-    public abstract function insert();
-    public abstract function delete($value, $field='id');
-    public abstract function update($value, $field='id');
-    
+   
     
     
 }
